@@ -80,6 +80,7 @@ import { shownMobileWorkspaceTabs, type MobileWorkspaceTab } from '@/lib/mobileW
 import { DedicatedMobileAppProvider, type MobileAppActions } from './mobileAppContext';
 import { autoConnectLastInstance, getAutoConnectTargetLabel, logMobileConnectEvent, reprobeActiveConnection, suppressAutoConnectUntilManualConnect, type AutoConnectOutcome } from './mobileConnections';
 import { isCapacitorMobileApp, useNativeAndroidBackButton, useNativeMobileChrome, useNativeMobileLifecycle } from './mobileNativeChrome';
+import { useMobileWebBackButton } from './useMobileWebBackButton';
 import { reconnectAppForTransportSwitch, resetAppForRuntimeEndpointChange } from './runtimeEndpointReset';
 import { useAppFontEffects } from './useAppFontEffects';
 import { useFontsReady } from './useFontsReady';
@@ -415,6 +416,10 @@ const MobileShell: React.FC<{ onActiveConnectionDeleted: () => void }> = ({ onAc
   }, [activeSurface, closeSurface, closeWorkspace, openPlan, sessionsSheetOpen, workspaceOpen]);
 
   useNativeAndroidBackButton(handleNativeBack);
+  useMobileWebBackButton(
+    openPlan !== null || activeSurface !== null || workspaceOpen || sessionsSheetOpen,
+    handleNativeBack,
+  );
 
   // The footer update item follows the shared update store, which in the
   // Capacitor shell tracks the app build (store updates), not the server. The
